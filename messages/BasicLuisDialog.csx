@@ -83,10 +83,9 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             context.Call(new QuantityDialog(), this.QuantityDialogResumeAfter);
         }
+        //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {quantityValue}, Product: {product}, Add or Remove: {addOrRemove}");
 
-        await context.PostAsync($"Account Number: {accountNumber}, Quantity: {quantityValue}, Product: {product}, Add or Remove: {addOrRemove}");
-
-        context.Wait(MessageReceived);
+        //context.Wait(MessageReceived);
     }
     
 private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)

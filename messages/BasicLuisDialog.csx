@@ -40,7 +40,7 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             addOrRemove = "add";
         }
-        if (result.Query.ToLower().Contains(" remove") || result.Query.ToLower()Contains(" removed"))
+        if (result.Query.ToLower().Contains(" remove") || result.Query.ToLower().Contains(" removed"))
         {
             addOrRemove = "remove";
         }

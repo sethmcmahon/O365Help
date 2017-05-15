@@ -10,6 +10,8 @@ using Microsoft.Bot.Builder.Luis.Models;
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
+    privare int quantity;
+
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
     }
@@ -77,11 +79,27 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             quantityValue = quantity.ToString();
         }
+        else
+        {
+            context.Call(new QuantityDialog(), this.QuantityDialogResumeAfter);
+        }
 
         await context.PostAsync($"Account Number: {accountNumber}, Quantity: {quantityValue}, Product: {product}, Add or Remove: {addOrRemove}");
 
         context.Wait(MessageReceived);
     }
+    
+private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
+{
+    try
+    {
+        this.quantity = await result;
+    }
+    catch (TooManyAttemptsException)
+    {
+        await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+    }
+}
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)

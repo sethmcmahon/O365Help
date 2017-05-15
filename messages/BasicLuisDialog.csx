@@ -18,11 +18,8 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"You have reached the none intent. You said: {result.Query}");
-        await context.PostAsync($"Here are the LUIS intents: ");
-
-        //retrieve list of intents
-        var intents = result.intents;
-        foreach (var intent in intents)
+        
+        foreach (IntentRecommendation  intent in result.Intents)
         {
             await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
         }
@@ -34,13 +31,25 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task ManageSubscriptionsIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"You have reached the ManageSubscriptions intent. You said: {result.Query}"); //
+        
+        foreach (IntentRecommendation  intent in result.Intents)
+        {
+            await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
+        }
+        
         context.Wait(MessageReceived);
     }
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"You have reached the EnableMailArchiving intent. You said: {result.Query}"); //
+        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}"); //
+        
+        foreach (IntentRecommendation  intent in result.Intents)
+        {
+            await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
+        }
+        
         context.Wait(MessageReceived);
     }
 }

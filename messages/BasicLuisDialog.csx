@@ -36,7 +36,7 @@ public class BasicLuisDialog : LuisDialog<object>
         int quantity = 0;
         string quantityValue = "Unknown";
 
-        if (result.Query.ToLower().Contains(" add") || result.ToLower().Query.Contains(" added"))
+        if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
         {
             addOrRemove = "add";
         }

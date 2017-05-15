@@ -30,20 +30,63 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("ManageSubscriptions")]
     public async Task ManageSubscriptionsIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"You have reached the ManageSubscriptions intent. You said: {result.Query}"); //
-        
-        foreach (IntentRecommendation  intent in result.Intents)
+        string accountNumber = "Unknown";
+        string product = "Unknown";
+        string addOrRemove = "Unknown";
+        int quantity = 0;
+        string quantityValue = "Unknown";
+
+        if (result.Query.Contains(" Add ") || result.Query.Contains(" add "))
         {
-            await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
+            addOrRemove = "add";
         }
+        if (result.Query.Contains(" Remove ") || result.Query.Contains(" remove "))
+        {
+            addOrRemove = "remove";
+        }
+
+        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
+        //foreach (IntentRecommendation  intent in result.Intents)
+        //{
+        //    await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
+        //}
+
+        foreach (EntityRecommendation  entity in result.Entities)
+        {
+            switch (entity.Type)
+            {
+                case "AccountNumber":
+                    accountNumber = entity.Entity;
+                    break;
+                case "Product":
+                    product = entity.Entity;
+                    break;
+                case "AddRemove":
+                    addOrRemove = entity.Entity;
+                    break;
+                case "ProductQuantity":
+                    Int32.TryParse(entity.Entity, out quantity);
+                    break;
+            }
+            
+            //await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+        }
+
+        if (quantity != 0)
+        {
+            quantityValue = quantity.ToString();
+        }
+
+        await context.PostAsync($"Account Number: {accountNumber}, Quantity: {quantityValue}, Product: {product}, Add or Remove: {addOrRemove}");
+
         context.Wait(MessageReceived);
     }
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}"); //
+        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
         foreach (IntentRecommendation  intent in result.Intents)
         {

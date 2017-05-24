@@ -17,7 +17,7 @@ public class QuantityDialog : IDialog<int>
 
     public async Task StartAsync(IDialogContext context)
     {
-        await context.PostAsync($"What is new quantity?");
+        await context.PostAsync($"What is the new subscription quantity?");
 
         context.Wait(this.MessageReceivedAsync);
     }

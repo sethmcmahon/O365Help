@@ -30,7 +30,7 @@ public class QuantityDialog : IDialog<int>
 
         if (Int32.TryParse(message.Text, out quantity) && (quantity > 0))
         {
-            context.Done(quantity);
+            context.Done<int>(quantity);
         }
         else
         {

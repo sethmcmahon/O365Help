@@ -88,12 +88,14 @@ public class BasicLuisDialog : LuisDialog<object>
         //context.Wait(MessageReceived);
     }
     
-private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable result)
+private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
 {
     try
     {
         //this.quantity = await result;
         //await context.PostAsync($"Quantity {this.quantity}, got it!");
+        
+        int qty = await result;
         await context.PostAsync($"{result.ToString()}, got it!");
     }
     catch (TooManyAttemptsException)

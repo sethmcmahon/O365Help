@@ -88,7 +88,7 @@ public class BasicLuisDialog : LuisDialog<object>
         //context.Wait(MessageReceived);
     }
     
-private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
+private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable result)
 {
     try
     {

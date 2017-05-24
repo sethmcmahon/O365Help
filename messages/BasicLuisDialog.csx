@@ -35,7 +35,6 @@ public class BasicLuisDialog : LuisDialog<object>
         string accountNumber = "Unknown";
         string product = "Unknown";
         string addOrRemove = "Unknown";
-        int quantity = 0;
         string quantityValue = "Unknown";
 
         if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
@@ -68,16 +67,16 @@ public class BasicLuisDialog : LuisDialog<object>
                     addOrRemove = entity.Entity;
                     break;
                 case "ProductQuantity":
-                    Int32.TryParse(entity.Entity, out quantity);
+                    Int32.TryParse(entity.Entity, out this.quantity);
                     break;
             }
             
             //await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
         }
 
-        if (quantity != 0)
+        if (this.quantity != 0)
         {
-            quantityValue = quantity.ToString();
+            quantityValue = this.quantity.ToString();
         }
         else
         {

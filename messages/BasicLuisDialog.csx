@@ -93,6 +93,7 @@ private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<
     try
     {
         this.quantity = await result;
+        await context.PostAsync($"Quantity {this.quantity}, got it!");
     }
     catch (TooManyAttemptsException)
     {

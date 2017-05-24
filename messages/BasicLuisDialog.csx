@@ -81,7 +81,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            context.Call(new QuantityDialog(), this.QuantityDialogResumeAfter);
+            context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
         }
         //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {quantityValue}, Product: {product}, Add or Remove: {addOrRemove}");
 
@@ -94,7 +94,7 @@ private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<
     {
         //this.quantity = await result;
         //await context.PostAsync($"Quantity {this.quantity}, got it!");
-        await context.PostAsync($"Got it!");
+        await context.PostAsync($"{result}, got it!");
     }
     catch (TooManyAttemptsException)
     {

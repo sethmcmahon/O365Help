@@ -81,7 +81,7 @@ context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
         //context.Wait(MessageReceived);
     }
 
-private GetParms(IDialogContext context)
+private async Task GetParms(IDialogContext context)
 {
     //if (this.quantity == 0)
     //{

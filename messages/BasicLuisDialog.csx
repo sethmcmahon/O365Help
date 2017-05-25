@@ -165,17 +165,17 @@ public class BasicLuisDialog : LuisDialog<object>
         this.GeneralIntentHandler(context,result);
     }
 
-    // [LuisIntent("AccessArchive")]
-    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    // {
-    //     this.GeneralIntentHandler(context,result);
-    // }
+    [LuisIntent("AccessArchive")]
+    public async Task AccessArchiveIntent(IDialogContext context, LuisResult result)
+    {
+        this.GeneralIntentHandler(context,result);
+    }
 
-    // [LuisIntent("DownloadOffice")]
-    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    // {
-    //     this.GeneralIntentHandler(context,result);
-    // }
+    [LuisIntent("DownloadOffice")]
+    public async Task DownloadOfficeIntent(IDialogContext context, LuisResult result)
+    {
+        this.GeneralIntentHandler(context,result);
+    }
 
     private async Task GeneralIntentHandler(IDialogContext context, LuisResult result)
     {

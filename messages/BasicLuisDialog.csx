@@ -72,13 +72,13 @@ public class BasicLuisDialog : LuisDialog<object>
 
     private async Task GetParms(IDialogContext context)
     {
-        if (this.quantity == 0)
-        {
-            context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
-        }
-        else if (this.product == "Unknown")
+        if (this.product == "Unknown")
         {
             context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
+        }
+        else if (this.quantity == 0)
+        {
+            context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
         }
         else
         {

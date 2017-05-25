@@ -12,6 +12,7 @@ public class BasicLuisDialog : LuisDialog<object>
 {
     private int quantity;
     private string product = "Unknown";
+    private string addOrRemove = "Unknown";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -34,23 +35,20 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task ManageSubscriptionsIntent(IDialogContext context, LuisResult result)
     {
         string accountNumber = "Unknown";
-        string addOrRemove = "Unknown";
 
         if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
         {
-            addOrRemove = "add";
+            this.addOrRemove = "add";
         }
         if (result.Query.ToLower().Contains(" remove") || result.Query.ToLower().Contains(" removed"))
         {
-            addOrRemove = "remove";
+            this.addOrRemove = "remove";
         }
 
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        //foreach (IntentRecommendation  intent in result.Intents)
-        //{
-        //    await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
-        //}
+        // this.DisplayIntents(result);
+        // this.DisplayEntities(result);
 
         foreach (EntityRecommendation  entity in result.Entities)
         {
@@ -63,21 +61,20 @@ public class BasicLuisDialog : LuisDialog<object>
                     this.product = entity.Entity;
                     break;
                 case "AddRemove":
-                    addOrRemove = entity.Entity;
+                    this.addOrRemove = entity.Entity;
                     break;
                 case "ProductQuantity":
                     Int32.TryParse(entity.Entity, out this.quantity);
                     break;
             }
-            
-            //await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+        }
+
+        if (this.quantity == 0 || this.product == "Unknown")
+        {
+            "Sure, I can help you with that. I'll need to get a little more information to help you manage your subscriptions.";
         }
 
         this.GetParms(context);
-
-        //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
-
-        //context.Wait(MessageReceived);
     }
 
 private async Task GetParms(IDialogContext context)
@@ -92,7 +89,7 @@ private async Task GetParms(IDialogContext context)
     }
     else
     {
-        await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
+        await context.PostAsync($"You're all set. I've added {this.quantity}, Product: {this.product}");
     }
 }
     
@@ -125,16 +122,30 @@ private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<s
 
     this.GetParms(context);
 }
+
+private async Task DisplayIntents(LuisResult result)
+{
+    foreach (IntentRecommendation  intent in result.Intents)
+    {
+        await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
+    }
+}
+
+private async Task DisplayEntities(LuisResult result)
+{
+    foreach (EntityRecommendation  entity in result.Entities)
+    {
+        await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+    }
+}
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        foreach (IntentRecommendation  intent in result.Intents)
-        {
-            await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
-        }
+        this.DisplayIntents(result);
+        this.DisplayEntities(result);
         
         context.Wait(MessageReceived);
     }

@@ -163,8 +163,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-        this.GeneralIntentHandler(context,result);
-        context.Wait(MessageReceived);
+        //this.GeneralIntentHandler(context,result);
     }
 
     // [LuisIntent("AccessArchive")]
@@ -185,5 +184,6 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         this.DisplayIntents(context, result);
         this.DisplayEntities(context, result);
+        context.Wait(MessageReceived);
     }
 }

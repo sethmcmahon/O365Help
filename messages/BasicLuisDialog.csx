@@ -78,10 +78,11 @@ public class BasicLuisDialog : LuisDialog<object>
             context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
         }
 
-        //  if (this.product == "Unknown")
-        //  {
-        //      context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
-        //  }
+        if (this.product == "Unknown")
+        {
+            await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
+            //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
+        }
 
         //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
 

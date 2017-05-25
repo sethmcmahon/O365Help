@@ -182,8 +182,8 @@ public class BasicLuisDialog : LuisDialog<object>
 
     private async Task GeneralIntentHandler(IDialogContext context, LuisResult result)
     {
-        this.DisplayIntents(context, result);
-        this.DisplayEntities(context, result);
-        context.Wait(MessageReceived);
+        // this.DisplayIntents(context, result);
+        // this.DisplayEntities(context, result);
+        // context.Wait(MessageReceived);
     }
 }

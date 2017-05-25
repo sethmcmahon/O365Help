@@ -88,8 +88,11 @@ private async Task GetParms(IDialogContext context)
     }
     else if (this.product == "Unknown")
     {
+        context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
+    }
+    else
+    {
         await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
-        //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
     }
 }
     
@@ -108,18 +111,20 @@ private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<
     this.GetParms(context);
 }
 
-// private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)
-// {
-//     try
-//     {
-//         this.product = await result;
-//         await context.PostAsync($"{this.product}, got it!");
-//     }
-//     catch (TooManyAttemptsException)
-//     {
-//         await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
-//     }
-// }
+private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)
+{
+    try
+    {
+        this.product = await result;
+        await context.PostAsync($"{this.product}, got it!");
+    }
+    catch (TooManyAttemptsException)
+    {
+        await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+    }
+
+    this.GetParms(context);
+}
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)

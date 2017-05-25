@@ -22,7 +22,8 @@ public class ProductDialog : IDialog<string>
 
     private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
     {
-        string product = await result;
-        context.Done<string>(product);
+        var message = await result;
+        
+        context.Done<string>(message.Text);
     }
 }

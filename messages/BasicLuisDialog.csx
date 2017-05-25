@@ -41,7 +41,7 @@ public class BasicLuisDialog : LuisDialog<object>
 
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        //this.DisplayIntents(context, result);
+        this.DisplayIntents(context, result);
         //this.DisplayEntities(context, result);
 
         foreach (EntityRecommendation  entity in result.Entities)
@@ -83,7 +83,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            await context.PostAsync($"All set. I have added {this.quantity}, of {this.product}.");
+            await context.PostAsync($"All set. You now have {this.quantity} subscriptions of {this.product}.");
         }
     }
     

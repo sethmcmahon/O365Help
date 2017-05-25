@@ -22,8 +22,6 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         await context.PostAsync($"You have reached the none intent. You said: {result.Query}");
         
-        // this.DisplayIntents(result);
-
         context.Wait(MessageReceived);
     }
 
@@ -67,81 +65,81 @@ public class BasicLuisDialog : LuisDialog<object>
 
         if (this.quantity == 0 || this.product == "Unknown")
         {
-            context.PostAsync("Sure, I can help you with that. I'll need to get a little more information to help you manage your subscriptions.");
+            context.PostAsync("Sure, I can help you with that. I'll need to get a little more information.");
         }
 
         this.GetParms(context);
     }
 
-private async Task GetParms(IDialogContext context)
-{
-    if (this.quantity == 0)
+    private async Task GetParms(IDialogContext context)
     {
-        context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
+        if (this.quantity == 0)
+        {
+            context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
+        }
+        else if (this.product == "Unknown")
+        {
+            context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
+        }
+        else
+        {
+            await context.PostAsync($"All set. I have added {this.quantity}, of {this.product}.");
+        }
     }
-    else if (this.product == "Unknown")
-    {
-        context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
-    }
-    else
-    {
-        //await context.PostAsync($"All set. I have added {this.quantity}, of {this.product}.");
-    }
-}
     
-private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
-{
-    try
+    private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
     {
-        this.quantity = await result;
-        await context.PostAsync($"{this.quantity.ToString()}, got it!");
-    }
-    catch (TooManyAttemptsException)
-    {
-        await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
-    }
+        try
+        {
+            this.quantity = await result;
+            await context.PostAsync($"{this.quantity.ToString()}, got it!");
+        }
+        catch (TooManyAttemptsException)
+        {
+            await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+        }
 
-    this.GetParms(context);
-}
-
-private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)
-{
-    try
-    {
-        this.product = await result;
-        await context.PostAsync($"{this.product}, got it!");
-    }
-    catch (TooManyAttemptsException)
-    {
-        await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+        this.GetParms(context);
     }
 
-    this.GetParms(context);
-}
+    private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)
+    {
+        try
+        {
+            this.product = await result;
+            await context.PostAsync($"{this.product}, got it!");
+        }
+        catch (TooManyAttemptsException)
+        {
+            await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+        }
 
-// private async Task DisplayIntents(LuisResult result)
-// {
-//     foreach (IntentRecommendation  intent in result.Intents)
-//     {
-//         await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
-//     }
-// }
+        this.GetParms(context);
+    }
 
-// private async Task DisplayEntities(LuisResult result)
-// {
-//     foreach (EntityRecommendation  entity in result.Entities)
-//     {
-//         await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
-//     }
-// }
+    private async Task DisplayIntents(LuisResult result)
+    {
+        foreach (IntentRecommendation  intent in result.Intents)
+        {
+            await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
+        }
+    }
+
+    private async Task DisplayEntities(LuisResult result)
+    {
+        foreach (EntityRecommendation  entity in result.Entities)
+        {
+            await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+        }
+    }
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        // this.DisplayIntents(result);
-        // this.DisplayEntities(result);
+        this.DisplayIntents(result);
+        this.DisplayEntities(result);
         
         context.Wait(MessageReceived);
     }

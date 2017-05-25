@@ -159,7 +159,7 @@ public class BasicLuisDialog : LuisDialog<object>
         this.addOrRemove = "";
     }
     
-    [LuisIntent("EnableMailArchiving", "DownloadOffice")]
+    [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         this.HandleAllOtherIntents(context,result);
@@ -171,6 +171,11 @@ public class BasicLuisDialog : LuisDialog<object>
         this.HandleAllOtherIntents(context,result);
     }
 
+    [LuisIntent("DownloadOffice")]
+    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    {
+        this.HandleAllOtherIntents(context,result);
+    }
 
     private async Task HandleAllOtherIntents(IDialogContext context, LuisResult result)
     {

@@ -6,11 +6,10 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 
-// For more information about this template visit http://aka.ms/azurebots-csharp-luis
 [Serializable]
 public class BasicLuisDialog : LuisDialog<object>
 {
-    private int quantity;
+    private int quantity = 0;
     private string product = "Unknown";
     private string addOrRemove = "Unknown";
 
@@ -23,10 +22,7 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         await context.PostAsync($"You have reached the none intent. You said: {result.Query}");
         
-        foreach (IntentRecommendation  intent in result.Intents)
-        {
-            await context.PostAsync($"{intent.Intent}, {intent.Score}"); //
-        }
+        // this.DisplayIntents(result);
 
         context.Wait(MessageReceived);
     }
@@ -123,29 +119,29 @@ private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<s
     this.GetParms(context);
 }
 
-private async Task DisplayIntents(LuisResult result)
-{
-    foreach (IntentRecommendation  intent in result.Intents)
-    {
-        await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
-    }
-}
+// private async Task DisplayIntents(LuisResult result)
+// {
+//     foreach (IntentRecommendation  intent in result.Intents)
+//     {
+//         await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
+//     }
+// }
 
-private async Task DisplayEntities(LuisResult result)
-{
-    foreach (EntityRecommendation  entity in result.Entities)
-    {
-        await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
-    }
-}
+// private async Task DisplayEntities(LuisResult result)
+// {
+//     foreach (EntityRecommendation  entity in result.Entities)
+//     {
+//         await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+//     }
+// }
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        this.DisplayIntents(result);
-        this.DisplayEntities(result);
+        // this.DisplayIntents(result);
+        // this.DisplayEntities(result);
         
         context.Wait(MessageReceived);
     }

@@ -72,12 +72,11 @@ public class BasicLuisDialog : LuisDialog<object>
 
     private async Task GetParms(IDialogContext context)
     {
-        //if (this.accountNumber == string.Empty)
-        //{
-            //context.Call<string>(new AccountNumberDialog(), this.AccountNumberDialogResumeAfter);
-        //}
-        //else if (this.product == string.Empty)
-        if (this.product == "")
+        if (this.accountNumber == "")
+        {
+            context.Call<string>(new AccountNumberDialog(), this.AccountNumberDialogResumeAfter);
+        }
+        else if (this.product == "")
         {
             context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
         }

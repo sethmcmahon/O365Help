@@ -73,21 +73,25 @@ public class BasicLuisDialog : LuisDialog<object>
             //await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
         }
 
-        if (this.quantity == 0)
-        {
-            context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
-        }
-
-        if (this.product == "Unknown")
-        {
-            await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
-            //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
-        }
+        this.GetParms(context);
 
         //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
 
         //context.Wait(MessageReceived);
     }
+
+private Task GetParms(IDialogContext context)
+{
+    if (this.quantity == 0)
+    {
+        context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
+    }
+    else if (this.product == "Unknown")
+    {
+        await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
+        //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
+    }
+}
     
 private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)
 {
@@ -100,6 +104,8 @@ private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<
     {
         await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
     }
+
+    this.GetParms(context);
 }
 
 private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)

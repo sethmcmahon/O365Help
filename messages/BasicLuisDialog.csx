@@ -40,8 +40,8 @@ public class BasicLuisDialog : LuisDialog<object>
             this.addOrRemove = "remove";
         }
 
-        this.DisplayIntents(context, result);
-        //this.DisplayEntities(context, result);
+        // this.DisplayIntents(context, result);
+        // this.DisplayEntities(context, result);
 
         foreach (EntityRecommendation  entity in result.Entities)
         {

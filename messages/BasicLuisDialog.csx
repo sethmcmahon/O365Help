@@ -164,6 +164,7 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
         this.GeneralIntentHandler(context,result);
+        context.Wait(MessageReceived);
     }
 
     // [LuisIntent("AccessArchive")]
@@ -184,7 +185,5 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         this.DisplayIntents(context, result);
         this.DisplayEntities(context, result);
-        
-        context.Wait(MessageReceived);
     }
 }

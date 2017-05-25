@@ -165,23 +165,20 @@ public class BasicLuisDialog : LuisDialog<object>
         this.GeneralIntentHandler(context,result);
     }
 
-    // [LuisIntent("AccessArchive")]
-    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    // {
-    //     await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-    //     this.HandleAllOtherIntents(context,result);
-    // }
+    [LuisIntent("AccessArchive")]
+    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    {
+        this.GeneralIntentHandler(context,result);
+    }
 
-    // [LuisIntent("DownloadOffice")]
-    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    // {
-    //     await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-    //     this.HandleAllOtherIntents(context,result);
-    // }
+     [LuisIntent("DownloadOffice")]
+     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+     {
+        this.GeneralIntentHandler(context,result);
+     }
 
     private async Task GeneralIntentHandler(IDialogContext context, LuisResult result)
     {
-        context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {result.TopScoringIntent.Score.ToString()}");
         this.DisplayIntents(context, result);
         this.DisplayEntities(context, result);
         context.Wait(MessageReceived);

@@ -159,32 +159,32 @@ public class BasicLuisDialog : LuisDialog<object>
         this.addOrRemove = "";
     }
     
-    [LuisIntent("EnableMailArchiving")]
-    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-        this.HandleAllOtherIntents(context,result);
-    }
+    // [LuisIntent("EnableMailArchiving")]
+    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    // {
+    //     await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
+    //     this.HandleAllOtherIntents(context,result);
+    // }
 
-    [LuisIntent("AccessArchive")]
-    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-        this.HandleAllOtherIntents(context,result);
-    }
+    // [LuisIntent("AccessArchive")]
+    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    // {
+    //     await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
+    //     this.HandleAllOtherIntents(context,result);
+    // }
 
-    [LuisIntent("DownloadOffice")]
-    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
-    {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
-        this.HandleAllOtherIntents(context,result);
-    }
+    // [LuisIntent("DownloadOffice")]
+    // public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    // {
+    //     await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
+    //     this.HandleAllOtherIntents(context,result);
+    // }
 
-    private async Task HandleAllOtherIntents(IDialogContext context, LuisResult result)
-    {
-        this.DisplayIntents(context, result);
-        this.DisplayEntities(context, result);
+    // private async Task HandleAllOtherIntents(IDialogContext context, LuisResult result)
+    // {
+    //     this.DisplayIntents(context, result);
+    //     this.DisplayEntities(context, result);
         
-        context.Wait(MessageReceived);
-    }
+    //     context.Wait(MessageReceived);
+    // }
 }

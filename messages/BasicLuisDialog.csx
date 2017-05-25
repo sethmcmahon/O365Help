@@ -86,11 +86,11 @@ private async Task GetParms(IDialogContext context)
     {
         context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
     }
-    //else if (this.product == "Unknown")
-    //{
-        //await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
+    else if (this.product == "Unknown")
+    {
+        await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
         //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
-    //}
+    }
 }
     
 private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<int> result)

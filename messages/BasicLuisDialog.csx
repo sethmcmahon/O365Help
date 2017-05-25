@@ -41,8 +41,8 @@ public class BasicLuisDialog : LuisDialog<object>
 
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        // this.DisplayIntents(result);
-        // this.DisplayEntities(result);
+        //this.DisplayIntents(context, result);
+        //this.DisplayEntities(context, result);
 
         foreach (EntityRecommendation  entity in result.Entities)
         {
@@ -117,29 +117,29 @@ public class BasicLuisDialog : LuisDialog<object>
         this.GetParms(context);
     }
 
-    // private async Task DisplayIntents(LuisResult result)
-    // {
-    //     foreach (IntentRecommendation  intent in result.Intents)
-    //     {
-    //         await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
-    //     }
-    // }
+    private async Task DisplayIntents(IDialogContext context, LuisResult result)
+    {
+        foreach (IntentRecommendation  intent in result.Intents)
+        {
+            await context.PostAsync($"Intent: {intent.Intent}, Score: {intent.Score}");
+        }
+    }
 
-    // private async Task DisplayEntities(LuisResult result)
-    // {
-    //     foreach (EntityRecommendation  entity in result.Entities)
-    //     {
-    //         await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
-    //     }
-    // }
+    private async Task DisplayEntities(IDialogContext context, LuisResult result)
+    {
+        foreach (EntityRecommendation  entity in result.Entities)
+        {
+            await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
+        }
+    }
     
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
         await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
         
-        // this.DisplayIntents(result);
-        // this.DisplayEntities(result);
+        this.DisplayIntents(context, result);
+        this.DisplayEntities(context, result);
         
         context.Wait(MessageReceived);
     }

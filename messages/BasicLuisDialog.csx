@@ -73,8 +73,7 @@ public class BasicLuisDialog : LuisDialog<object>
             //await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
         }
 
-context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
-        // this.GetParms(context);
+        this.GetParms(context);
 
         //await context.PostAsync($"Account Number: {accountNumber}, Quantity: {this.quantity}, Product: {this.product}, Add or Remove: {addOrRemove}");
 
@@ -83,10 +82,10 @@ context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
 
 private async Task GetParms(IDialogContext context)
 {
-    //if (this.quantity == 0)
-    //{
+    if (this.quantity == 0)
+    {
         context.Call<int>(new QuantityDialog(), this.QuantityDialogResumeAfter);
-    //}
+    }
     //else if (this.product == "Unknown")
     //{
         //await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");

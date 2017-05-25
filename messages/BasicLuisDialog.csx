@@ -159,10 +159,22 @@ public class BasicLuisDialog : LuisDialog<object>
         this.addOrRemove = "";
     }
     
-    [LuisIntent("EnableMailArchiving")]
+    [LuisIntent("EnableMailArchiving", "DownloadOffice")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
+        this.HandleAllOtherIntents(context,result);
+    }
+
+    [LuisIntent("AccessArchive")]
+    public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
+    {
+        this.HandleAllOtherIntents(context,result);
+    }
+
+
+    private async Task HandleAllOtherIntents(IDialogContext context, LuisResult result)
+    {
+        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {intent.Score}");
         
         this.DisplayIntents(context, result);
         this.DisplayEntities(context, result);

@@ -80,7 +80,7 @@ public class BasicLuisDialog : LuisDialog<object>
         //context.Wait(MessageReceived);
     }
 
-private Task GetParms(IDialogContext context)
+private GetParms(IDialogContext context)
 {
     if (this.quantity == 0)
     {
@@ -88,7 +88,7 @@ private Task GetParms(IDialogContext context)
     }
     else if (this.product == "Unknown")
     {
-        await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
+        //await context.PostAsync($"Quantity: {this.quantity}, Product: {this.product}");
         //context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
     }
 }

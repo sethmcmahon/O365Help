@@ -162,8 +162,8 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("EnableMailArchiving")]
     public async Task EnableMailArchivingIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {result.TopScoringIntent.Score.ToString()}");
-        //this.GeneralIntentHandler(context,result);
+        //await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}, Score: {result.TopScoringIntent.Score.ToString()}");
+        this.GeneralIntentHandler(context,result);
     }
 
     // [LuisIntent("AccessArchive")]

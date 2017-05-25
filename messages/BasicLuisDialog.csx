@@ -12,7 +12,7 @@ public class BasicLuisDialog : LuisDialog<object>
     private int quantity = 0;
     private string accountNumber = "";
     private string product = "";
-    private string addOrRemove = "";
+    private string addRemoveReplace = "";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -31,17 +31,7 @@ public class BasicLuisDialog : LuisDialog<object>
     {
         this.ClearManageSubscriptionState();
 
-        if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
-        {
-            this.addOrRemove = "add";
-        }
-        if (result.Query.ToLower().Contains(" remove") || result.Query.ToLower().Contains(" removed"))
-        {
-            this.addOrRemove = "remove";
-        }
-
-        // this.DisplayIntents(context, result);
-        // this.DisplayEntities(context, result);
+        this.GetSubscriptionManagementAction(result.Query);
 
         foreach (EntityRecommendation  entity in result.Entities)
         {
@@ -54,7 +44,7 @@ public class BasicLuisDialog : LuisDialog<object>
                     this.product = entity.Entity;
                     break;
                 case "AddRemove":
-                    this.addOrRemove = entity.Entity;
+                    this.addRemoveReplace = entity.Entity;
                     break;
                 case "ProductQuantity":
                     Int32.TryParse(entity.Entity, out this.quantity);
@@ -68,6 +58,18 @@ public class BasicLuisDialog : LuisDialog<object>
         }
 
         this.GetParms(context);
+    }
+
+    private GetSubscriptionManagementAction(string query)
+    {
+        if (query.ToLower().Contains(" add") || query.ToLower().Contains(" added"))
+        {
+            this.addRemoveReplace = "add";
+        }
+        if (query.ToLower().Contains(" remove") || query.ToLower().Contains(" removed"))
+        {
+            this.addRemoveReplace = "remove";
+        }
     }
 
     private async Task GetParms(IDialogContext context)
@@ -156,7 +158,7 @@ public class BasicLuisDialog : LuisDialog<object>
         this.quantity = 0;
         this.accountNumber = "";
         this.product = "";
-        this.addOrRemove = "";
+        this.addRemoveReplace = "";
     }
     
     [LuisIntent("EnableMailArchiving")]

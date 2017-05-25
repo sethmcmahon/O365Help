@@ -29,6 +29,7 @@ public class BasicLuisDialog : LuisDialog<object>
     public async Task ManageSubscriptionsIntent(IDialogContext context, LuisResult result)
     {
         string accountNumber = "Unknown";
+        this.ClearManageSubscriptionState();
 
         if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
         {
@@ -39,8 +40,6 @@ public class BasicLuisDialog : LuisDialog<object>
             this.addOrRemove = "remove";
         }
 
-        await context.PostAsync($"Intent chosen: {result.TopScoringIntent.Intent}");
-        
         this.DisplayIntents(context, result);
         //this.DisplayEntities(context, result);
 
@@ -131,6 +130,13 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             await context.PostAsync($"Entity: {entity.Type}, Value: {entity.Entity}, Score: {entity.Score}");
         }
+    }
+
+    private void ClearManageSubscriptionState()
+    {
+        this.quantity = 0;
+        this.product = "Unknown";
+        this.addOrRemove = "Unknown";
     }
     
     [LuisIntent("EnableMailArchiving")]

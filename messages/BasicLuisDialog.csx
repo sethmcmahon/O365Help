@@ -10,8 +10,9 @@ using Microsoft.Bot.Builder.Luis.Models;
 public class BasicLuisDialog : LuisDialog<object>
 {
     private int quantity = 0;
-    private string product = "Unknown";
-    private string addOrRemove = "Unknown";
+    private string accountNumber = string.Empty;
+    private string product = string.Empty;
+    private string addOrRemove = string.Empty;
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -28,7 +29,6 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("ManageSubscriptions")]
     public async Task ManageSubscriptionsIntent(IDialogContext context, LuisResult result)
     {
-        string accountNumber = "Unknown";
         this.ClearManageSubscriptionState();
 
         if (result.Query.ToLower().Contains(" add") || result.Query.ToLower().Contains(" added"))
@@ -48,7 +48,7 @@ public class BasicLuisDialog : LuisDialog<object>
             switch (entity.Type)
             {
                 case "AccountNumber":
-                    accountNumber = entity.Entity;
+                    this.accountNumber = entity.Entity;
                     break;
                 case "Product":
                     this.product = entity.Entity;
@@ -62,7 +62,7 @@ public class BasicLuisDialog : LuisDialog<object>
             }
         }
 
-        if (this.quantity == 0 || this.product == "Unknown")
+        if (this.accountNumber == string.Empty || this.quantity == 0 || this.product == string.Empty)
         {
             await context.PostAsync("Sure, I can help you with that. I'll need to get a little more information.");
         }
@@ -72,7 +72,11 @@ public class BasicLuisDialog : LuisDialog<object>
 
     private async Task GetParms(IDialogContext context)
     {
-        if (this.product == "Unknown")
+        if (this.accountNumber == string.Empty)
+        {
+            context.Call<string>(new AccountNumberDialog(), this.AccountNumberDialogResumeAfter);
+        }
+        else if (this.product == string.Empty)
         {
             context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
         }
@@ -82,7 +86,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            await context.PostAsync($"All set. You now have {this.quantity} subscriptions of {this.product}.");
+            await context.PostAsync($"All set. Your account {this.accountNumber}, now has {this.quantity} subscriptions of {this.product}.");
         }
     }
     
@@ -92,6 +96,21 @@ public class BasicLuisDialog : LuisDialog<object>
         {
             this.quantity = await result;
             await context.PostAsync($"{this.quantity.ToString()}, got it!");
+        }
+        catch (TooManyAttemptsException)
+        {
+            await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
+        }
+
+        this.GetParms(context);
+    }
+
+    private async Task AccountNumberDialogResumeAfter(IDialogContext context, IAwaitable<string> result)
+    {
+        try
+        {
+            this.accountNumber = await result;
+            await context.PostAsync($"{this.accountNumber}, got it!");
         }
         catch (TooManyAttemptsException)
         {
@@ -135,8 +154,9 @@ public class BasicLuisDialog : LuisDialog<object>
     private void ClearManageSubscriptionState()
     {
         this.quantity = 0;
-        this.product = "Unknown";
-        this.addOrRemove = "Unknown";
+        this.accountNumber = string.Empty;
+        this.product = string.Empty;
+        this.addOrRemove = string.Empty";
     }
     
     [LuisIntent("EnableMailArchiving")]

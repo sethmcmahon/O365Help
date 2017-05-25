@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "messages", "messages", "{F4
 		messages\BasicLuisDialog.csx = messages\BasicLuisDialog.csx
 		messages\QuantityDialog.csx = messages\QuantityDialog.csx
 		messages\ProductDialog.csx = messages\ProductDialog.csx
+		messages\AccountNumberDialog.csx = messages\AccountNumberDialog.csx
 		messages\function.json = messages\function.json
 		messages\project.json = messages\project.json
 		messages\project.lock.json = messages\project.lock.json

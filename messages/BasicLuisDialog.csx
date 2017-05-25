@@ -85,7 +85,7 @@ private async Task GetParms(IDialogContext context)
     }
     else
     {
-        await context.PostAsync($"All set. I have added {this.quantity}, of {this.product}.");
+        //await context.PostAsync($"All set. I have added {this.quantity}, of {this.product}.");
     }
 }
     

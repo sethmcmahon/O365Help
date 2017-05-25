@@ -10,9 +10,9 @@ using Microsoft.Bot.Builder.Luis.Models;
 public class BasicLuisDialog : LuisDialog<object>
 {
     private int quantity = 0;
-    private string accountNumber = string.Empty;
-    private string product = string.Empty;
-    private string addOrRemove = string.Empty;
+    private string accountNumber = "";
+    private string product = "";
+    private string addOrRemove = "";
 
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -62,7 +62,7 @@ public class BasicLuisDialog : LuisDialog<object>
             }
         }
 
-        if (this.accountNumber == string.Empty || this.quantity == 0 || this.product == string.Empty)
+        if (this.accountNumber == "" || this.quantity == 0 || this.product == "")
         {
             await context.PostAsync("Sure, I can help you with that. I'll need to get a little more information.");
         }
@@ -77,7 +77,7 @@ public class BasicLuisDialog : LuisDialog<object>
             //context.Call<string>(new AccountNumberDialog(), this.AccountNumberDialogResumeAfter);
         //}
         //else if (this.product == string.Empty)
-        if (this.product == string.Empty)
+        if (this.product == "")
         {
             context.Call<string>(new ProductDialog(), this.ProductDialogResumeAfter);
         }
@@ -155,9 +155,9 @@ public class BasicLuisDialog : LuisDialog<object>
     private void ClearManageSubscriptionState()
     {
         this.quantity = 0;
-        this.accountNumber = string.Empty;
-        this.product = string.Empty;
-        this.addOrRemove = string.Empty";
+        this.accountNumber = "";
+        this.product = "";
+        this.addOrRemove = "";
     }
     
     [LuisIntent("EnableMailArchiving")]

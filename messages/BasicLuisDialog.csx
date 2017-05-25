@@ -64,7 +64,7 @@ public class BasicLuisDialog : LuisDialog<object>
 
         if (this.quantity == 0 || this.product == "Unknown")
         {
-            context.PostAsync("Sure, I can help you with that. I'll need to get a little more information.");
+            await context.PostAsync("Sure, I can help you with that. I'll need to get a little more information.");
         }
 
         this.GetParms(context);

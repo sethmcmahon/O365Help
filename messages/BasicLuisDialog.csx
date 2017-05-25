@@ -105,7 +105,7 @@ private async Task QuantityDialogResumeAfter(IDialogContext context, IAwaitable<
         await context.PostAsync("I'm sorry, I'm having issues understanding you. Let's try again.");
     }
 
-    //this.GetParms(context);
+    this.GetParms(context);
 }
 
 // private async Task ProductDialogResumeAfter(IDialogContext context, IAwaitable<string> result)

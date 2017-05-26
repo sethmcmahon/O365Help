@@ -15,7 +15,7 @@ public class ProductDialog : IDialog<string>
 
     public async Task StartAsync(IDialogContext context)
     {
-        await context.PostAsync($"What product would you like to manage?");
+        await context.PostAsync($"What product should I update?");
 
         context.Wait(this.MessageReceivedAsync);
     }
